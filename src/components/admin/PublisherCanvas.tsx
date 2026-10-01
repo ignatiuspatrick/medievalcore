@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 
-import styles from './PublisherStudio.module.css'
+import styles from './PublisherStudio.module.scss'
 
 export type StudioPage = {
   id: string; title: string; slug: string; isInNavigation: boolean; navigationLabel: string; navigationOrder: number; updatedAt: string

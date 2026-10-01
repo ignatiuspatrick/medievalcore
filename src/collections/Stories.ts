@@ -2,17 +2,19 @@ import type { Access, CollectionBeforeChangeHook, CollectionConfig, Where } from
 
 import { isPublisher, loggedIn } from '@/access/roles'
 import { generateSlug } from '@/hooks/generateSlug'
+import { textColorField } from '@/blocks/fields/textColor'
 
-const ownUnpublishedStories: Access = ({ req }) => {
+/**
+ * Authors can revise any story they co-author, including a published one.
+ * With Payload drafts enabled, their revision is saved as a draft while the
+ * current published version remains available to readers until a publisher
+ * reviews and publishes the change.
+ */
+const ownStories: Access = ({ req }) => {
   if (isPublisher(req.user)) return true
   if (!req.user) return false
 
-  return {
-    and: [
-      { authors: { contains: req.user.id } },
-      { status: { not_equals: 'published' } },
-    ],
-  } as Where
+  return { authors: { contains: req.user.id } } as Where
 }
 
 const ownOrPublishedStories: Access = ({ req }) => {
@@ -56,7 +58,7 @@ export const Stories: CollectionConfig = {
     admin: ({ req }) => Boolean(req.user),
     create: loggedIn,
     read: ownOrPublishedStories,
-    update: ownUnpublishedStories,
+    update: ownStories,
     delete: ({ req }) => isPublisher(req.user),
   },
   hooks: {
@@ -67,12 +69,18 @@ export const Stories: CollectionConfig = {
     { name: 'title', type: 'text', required: true },
     { name: 'slug', type: 'text', unique: true, index: true, admin: { description: 'Optional on creation. Generated from the title when empty; editable afterwards.' } },
     { name: 'content', type: 'richText', required: true },
+    textColorField('contentColor', 'Story text color'),
     {
-      name: 'layoutTemplate',
-      label: 'Template style',
-      type: 'relationship',
-      relationTo: 'layout-templates',
+      name: 'renderStyle',
+      label: 'Render style',
+      type: 'select',
       required: true,
+      defaultValue: 'reader',
+      options: [{ label: 'Reader', value: 'reader' }],
+      admin: {
+        position: 'sidebar',
+        description: 'Reader is the accessible online reading experience used for this story.',
+      },
     },
     {
       name: 'status',
@@ -84,7 +92,10 @@ export const Stories: CollectionConfig = {
         { label: 'In review', value: 'in_review' },
         { label: 'Published', value: 'published' },
       ],
-      admin: { position: 'sidebar' },
+      admin: {
+        position: 'sidebar',
+        description: 'Authors can save revisions to published stories as drafts. Publishers control the final published version.',
+      },
     },
     { name: 'publishDate', type: 'date', admin: { position: 'sidebar', date: { pickerAppearance: 'dayAndTime' } } },
     {

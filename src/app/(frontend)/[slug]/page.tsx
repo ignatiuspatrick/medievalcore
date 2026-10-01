@@ -1,9 +1,8 @@
 import { notFound } from 'next/navigation'
-import { getPayload } from 'payload'
 
-import config from '@payload-config'
 import { PageLivePreview } from '@/components/public/PageLivePreview'
 import { PageRenderer, type PageData, type PageOrnaments, type PageStory } from '@/components/public/PageRenderer'
+import { getCMS } from '@/lib/getCMS'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,7 +22,7 @@ export default async function CMSPage({
   const { slug } = await params
   const { preview } = await searchParams
   const isLivePreview = preview === 'true'
-  const payload = await getPayload({ config })
+  const payload = await getCMS()
   const { docs } = await payload.find({
     collection: 'pages',
     draft: isLivePreview,

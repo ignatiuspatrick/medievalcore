@@ -1,3 +1,4 @@
+import { HexColorPicker as HexColorPicker_7e3163e536a320b33d2094929e651778 } from '@/components/admin/HexColorPicker'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -21,6 +22,7 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { PageEditorShortcuts as PageEditorShortcuts_239b0c3f8eb2df0eb4c8c6296cefb76d } from '@/components/admin/PageEditorShortcuts'
 import { WorkspaceSwitch as WorkspaceSwitch_ab589f7d65a43aa788a12b67f6878d24 } from '@/components/admin/WorkspaceSwitch'
 import { WorkspaceDashboard as WorkspaceDashboard_ddc4e6d3af9a9299ee8d46db3293945e } from '@/components/admin/WorkspaceDashboard'
 import { PublisherStudio as PublisherStudio_cacba5d36471cb89ef974d0b0f107311 } from '@/components/admin/PublisherStudio'
@@ -28,6 +30,7 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 
 /** @type import('payload').ImportMap */
 export const importMap = {
+  "@/components/admin/HexColorPicker#HexColorPicker": HexColorPicker_7e3163e536a320b33d2094929e651778,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -51,6 +54,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@/components/admin/PageEditorShortcuts#PageEditorShortcuts": PageEditorShortcuts_239b0c3f8eb2df0eb4c8c6296cefb76d,
   "@/components/admin/WorkspaceSwitch#WorkspaceSwitch": WorkspaceSwitch_ab589f7d65a43aa788a12b67f6878d24,
   "@/components/admin/WorkspaceDashboard#WorkspaceDashboard": WorkspaceDashboard_ddc4e6d3af9a9299ee8d46db3293945e,
   "@/components/admin/PublisherStudio#PublisherStudio": PublisherStudio_cacba5d36471cb89ef974d0b0f107311,

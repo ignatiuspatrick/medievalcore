@@ -14,6 +14,7 @@ import { ButtonBlock } from '@/blocks/ButtonBlock'
 import { LandingPageBlock } from '@/blocks/LandingPageBlock'
 import { NestedContainerBlock } from '@/blocks/NestedContainerBlock'
 import { TitleBlock } from '@/blocks/TitleBlock'
+import { surfaceField } from '@/blocks/fields/surface'
 
 /**
  * A section is deliberately not allowed to contain another section. This keeps
@@ -24,22 +25,9 @@ export const ContainerBlock: Block = {
   slug: 'container',
   interfaceName: 'ContainerBlock',
   labels: { singular: 'Section container', plural: 'Section containers' },
+  admin: { disableBlockName: true },
   fields: [
-    {
-      name: 'background',
-      label: 'Section surface',
-      type: 'select',
-      defaultValue: 'primary',
-      options: [
-        { label: 'Primary sage', value: 'primary' },
-        { label: 'Secondary sage', value: 'secondary' },
-        { label: 'Transparent', value: 'transparent' },
-        // Kept while existing Pages are migrated to the new primary/secondary palette.
-        { label: 'Parchment (legacy)', value: 'parchment' },
-        { label: 'Sage wash (legacy)', value: 'sage' },
-        { label: 'Ink (legacy)', value: 'ink' },
-      ],
-    },
+    surfaceField('Section background color', 'primary'),
     {
       name: 'padding',
       label: 'Inner spacing',

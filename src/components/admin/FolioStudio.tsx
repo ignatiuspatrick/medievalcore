@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 
-import styles from './FolioStudio.module.css'
+import styles from './FolioStudio.module.scss'
 
 export type FolioStory = {
   id: string
@@ -12,7 +12,7 @@ export type FolioStory = {
   updatedAt: string
   excerpt: string
   wordCount: number
-  template: string
+  renderStyle: string
 }
 
 type Props = { displayName: string; isPublisher: boolean; stories: FolioStory[] }
@@ -43,20 +43,20 @@ export function FolioStudio({ displayName, isPublisher, stories }: Props) {
       <div className={styles.panelHeading}><div><p>✒</p><h1>Story Backlog</h1></div><a className={styles.newFolio} href="/admin/collections/stories/create">+ New Folio</a></div>
       <label className={styles.search}><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search manuscript rolls…" /></label>
       <div className={styles.filters}>{([['all', 'All'], ['draft', 'Drafts'], ['in_review', 'Review'], ['published', 'Ready']] as Array<[Filter, string]>).map(([value, label]) => <button className={filter === value ? styles.filterActive : ''} key={value} onClick={() => setFilter(value)}>{label} <span>{count(value)}</span></button>)}</div>
-      <div className={styles.storyList}>{visibleStories.map((story) => <button className={`${styles.storyCard} ${story.id === selectedID ? styles.storySelected : ''}`} key={story.id} onClick={() => setSelectedID(story.id)}><span className={`${styles.statusChip} ${styles[story.status]}`}>{statusLabel[story.status]}</span><span className={styles.folioNumber}>Folio · {friendlyDate(story.updatedAt)}</span><strong>{story.title}</strong><small>{story.excerpt}</small><footer><span>✦ {story.template}</span><span>{story.wordCount.toLocaleString()} words</span></footer></button>)}{!visibleStories.length && <p className={styles.emptyList}>No folios match this search.</p>}</div>
+      <div className={styles.storyList}>{visibleStories.map((story) => <button className={`${styles.storyCard} ${story.id === selectedID ? styles.storySelected : ''}`} key={story.id} onClick={() => setSelectedID(story.id)}><span className={`${styles.statusChip} ${styles[story.status]}`}>{statusLabel[story.status]}</span><span className={styles.folioNumber}>Folio · {friendlyDate(story.updatedAt)}</span><strong>{story.title}</strong><small>{story.excerpt}</small><footer><span>✦ {story.renderStyle}</span><span>{story.wordCount.toLocaleString()} words</span></footer></button>)}{!visibleStories.length && <p className={styles.emptyList}>No folios match this search.</p>}</div>
     </aside>
 
     <section className={styles.manuscript}>
-      <div className={styles.manuscriptMeta}><em>Manuscript style:</em><span>{selected?.template || 'Select a folio'}</span><small>· Auto-saved in Payload</small></div>
+      <div className={styles.manuscriptMeta}><em>Render style:</em><span>{selected?.renderStyle || 'Select a folio'}</span><small>· Auto-saved in Payload</small></div>
       <div className={styles.toolbar}><button>A</button><button>H1</button><button>H2</button><button><i>I</i></button><button>“ ”</button><button>❦ Divider</button><button>♫ Audio</button><button>▧ Vignette</button></div>
-      {selected ? <article className={styles.paper}><div className={styles.paperInner}><p className={styles.kicker}>FOLIO · {friendlyDate(selected.updatedAt).toUpperCase()}</p><h2>{selected.title}</h2><p className={styles.byline}>A working manuscript by {displayName} · {selected.template}</p><hr /><p className={styles.dropCap}>{selected.excerpt}</p><p>Open the complete manuscript to write with Payload’s Lexical editor, add images, invite co-authors, and submit it for review.</p><a className={styles.editLink} href={`/admin/collections/stories/${selected.id}`}>Open full manuscript editor →</a></div></article> : <div className={styles.blankPaper}><span>❦</span><h2>Your writing table is ready.</h2><p>Create a folio to begin a manuscript.</p><a href="/admin/collections/stories/create">Create first folio</a></div>}
+      {selected ? <article className={styles.paper}><div className={styles.paperInner}><p className={styles.kicker}>FOLIO · {friendlyDate(selected.updatedAt).toUpperCase()}</p><h2>{selected.title}</h2><p className={styles.byline}>A working manuscript by {displayName} · {selected.renderStyle}</p><hr /><p className={styles.dropCap}>{selected.excerpt}</p><p>Open the complete manuscript to write with Payload’s Lexical editor, add images, invite co-authors, and submit it for review.</p><a className={styles.editLink} href={`/admin/collections/stories/${selected.id}`}>Open full manuscript editor →</a></div></article> : <div className={styles.blankPaper}><span>❦</span><h2>Your writing table is ready.</h2><p>Create a folio to begin a manuscript.</p><a href="/admin/collections/stories/create">Create first folio</a></div>}
     </section>
 
     <aside className={styles.details}>
       <div className={styles.coauthorHeader}><h2>✦ Sister Co-Authors Panel</h2><p>A shared editorial chamber</p></div>
       <section className={styles.infoCard}><h3>ACTIVE CO-SCRIBES</h3><div className={styles.person}><span className={styles.avatar}>✒</span><span><strong>{displayName}</strong><small>Editing this manuscript</small></span><i className={styles.online} /></div><div className={styles.person}><span className={styles.avatar}>✦</span><span><strong>Publisher review</strong><small>Available when submitted</small></span><i className={styles.away} /></div></section>
       <section className={styles.infoCard}><h3>FOLIO METRICS</h3><div className={styles.metrics}><div><small>Word count</small><strong>{(selected?.wordCount || 0).toLocaleString()}</strong></div><div><small>Reading time</small><strong>{Math.max(1, Math.ceil((selected?.wordCount || 0) / 220))} min</strong></div></div><p className={styles.tags}>Folklore tags: <span>#Storycraft</span> <span>#Talehouse</span></p></section>
-      <section className={styles.infoCard}><h3>EDITORIAL PARCHMENT TRAIL</h3><ul className={styles.trail}><li>Folio studio opened</li><li>Manuscript style applied</li><li>Ready for your next sentence</li></ul></section>
+      <section className={styles.infoCard}><h3>EDITORIAL PARCHMENT TRAIL</h3><ul className={styles.trail}><li>Folio studio opened</li><li>Reader render style applied</li><li>Ready for your next sentence</li></ul></section>
       {selected && <a className={styles.primaryAction} href={`/admin/collections/stories/${selected.id}`}>{selected.status === 'published' ? 'View published folio' : 'Continue writing'}</a>}
     </aside>
     <footer className={styles.footer}><span><b>●</b> The Talehouse Press</span><span>Folio Studio · Payload CMS</span><span>Handcrafted for stories</span></footer>

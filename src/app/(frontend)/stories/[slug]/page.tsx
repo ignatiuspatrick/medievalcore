@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
-import { getPayload } from 'payload'
-import config from '@payload-config'
-import { RichTextContent } from '@/components/public/RichTextContent'
+import { Reader } from '@/components/public/Reader'
+import { getCMS } from '@/lib/getCMS'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -10,7 +9,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function StoryPage({ params }: Props) {
   const { slug } = await params
-  const payload = await getPayload({ config })
+  const payload = await getCMS()
   const { docs } = await payload.find({
     collection: 'stories',
     where: { and: [{ slug: { equals: slug } }, { status: { equals: 'published' } }] },
@@ -21,17 +20,9 @@ export default async function StoryPage({ params }: Props) {
 
   if (!story) notFound()
 
-  const template = typeof story.layoutTemplate === 'object' ? story.layoutTemplate : null
   const image = typeof story.primaryImage === 'object' ? story.primaryImage : null
 
-  return (
-    <main className={`reader reader--${template?.readerStyle || 'standard'}`}>
-      <article>
-        <p className="reader__template">{template?.name || 'Standard Article'}</p>
-        <h1>{story.title}</h1>
-        {image?.url && <img className="reader__image" src={image.url} alt={image.alt || ''} />}
-        <RichTextContent data={story.content} />
-      </article>
-    </main>
-  )
+  // The render-style field makes this explicit on every Story. More styles can
+  // be added here later without reintroducing a publisher-managed style menu.
+  return <Reader content={story.content} contentColor={story.contentColor} image={image} title={story.title} />
 }

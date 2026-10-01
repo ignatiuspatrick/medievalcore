@@ -4,6 +4,7 @@ export const ButtonBlock: Block = {
   slug: 'button',
   interfaceName: 'ButtonBlock',
   labels: { singular: 'Button', plural: 'Buttons' },
+  admin: { disableBlockName: true },
   fields: [
     { name: 'label', type: 'text', required: true, defaultValue: 'Read more' },
     {
@@ -35,19 +36,9 @@ export const ButtonBlock: Block = {
       defaultValue: 'primary',
       options: [
         { label: 'Primary ink', value: 'primary' },
-        { label: 'Secondary sage', value: 'secondary' },
+        { label: 'Secondary berry', value: 'secondary' },
         { label: 'Parchment outline', value: 'outline' },
-        { label: 'Text link', value: 'text' },
-      ],
-    },
-    {
-      name: 'alignment',
-      type: 'select',
-      defaultValue: 'left',
-      options: [
-        { label: 'Left', value: 'left' },
-        { label: 'Center', value: 'center' },
-        { label: 'Right', value: 'right' },
+        { label: 'Link', value: 'text' },
       ],
     },
     { name: 'openInNewTab', label: 'Open in a new tab', type: 'checkbox', defaultValue: false, admin: { description: 'Usually appropriate for external websites.' } },

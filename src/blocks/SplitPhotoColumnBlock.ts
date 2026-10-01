@@ -1,12 +1,16 @@
 import type { Block } from 'payload'
 
+import { textColorField } from '@/blocks/fields/textColor'
+
 export const SplitPhotoColumnBlock: Block = {
   slug: 'splitPhotoColumn',
   interfaceName: 'SplitPhotoColumnBlock',
   labels: { singular: 'Split photo and copy', plural: 'Split photo and copy' },
+  admin: { disableBlockName: true },
   fields: [
     { name: 'heading', type: 'text', required: true },
     { name: 'content', type: 'richText', required: true },
+    textColorField(),
     { name: 'image', type: 'upload', relationTo: 'media', required: true },
     {
       name: 'imagePosition',

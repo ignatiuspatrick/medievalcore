@@ -9,7 +9,7 @@ export function WorkspaceSwitch() {
   const { user } = useAuth<WorkspaceUser>()
   const pathname = usePathname()
   const isPublisher = user?.roles?.includes('publisher')
-  const inPublisherWorkspace = pathname.includes('/pages') || pathname.includes('/layout-templates')
+  const inPublisherWorkspace = pathname.includes('/pages') || pathname.includes('/page-templates')
 
   return (
     <nav aria-label="Workspace switcher" style={{ display: 'flex', gap: 8, alignItems: 'center' }}>

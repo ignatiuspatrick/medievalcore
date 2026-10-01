@@ -1,0 +1,213 @@
+.collection {
+  position: relative;
+  width: min(1200px, 90vw);
+  margin: 5rem auto;
+  padding: clamp(2rem, 5vw, 4rem);
+  overflow: hidden;
+  border: 1px solid #a9c0a8;
+  background: linear-gradient(135deg, #edf5e9, #d8e8d5 55%, #eff5e6);
+  box-shadow:
+    inset 0 0 0 3px #f6f1e4,
+    0 10px 25px #17342514;
+}
+
+.surface_primary {
+  border-color: #91aa90;
+  background: linear-gradient(135deg, #d9ead4, #bfd7b9 55%, #d8e8d2);
+}
+
+.surface_secondary {
+  border-color: #b6c7b1;
+  background: linear-gradient(135deg, #f2f7ef, #e1eddd 55%, #f6f9f3);
+}
+
+.surface_parchment {
+  border-color: #c9b083;
+  background: linear-gradient(135deg, #fff9e9, #f2e7cd 55%, #fffaf0);
+}
+
+.surface_transparent {
+  border-color: #c9d4c6;
+  background: transparent;
+  box-shadow: none;
+}
+
+.vine {
+  position: absolute;
+  top: -90px;
+  right: -64px;
+  width: 310px;
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.heading {
+  position: relative;
+  max-width: 650px;
+  margin: 0 auto 2.2rem;
+  text-align: center;
+}
+
+.heading p {
+  margin: 0 0 0.5rem;
+  color: #9b463b;
+  font: 400 0.7rem/1 var(--font-modern-antiqua), Georgia, serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.heading h2 {
+  margin: 0;
+  padding-bottom: 0.3em;
+  color: #173b2b;
+  font: 400 clamp(2.2rem, 4vw, 4rem)/0.95 var(--font-eagle-lake), Georgia, serif !important;
+}
+
+.heading span {
+  display: block;
+  margin: 1rem auto 0;
+  color: #557162;
+  font: 400 1.05rem/1.55 var(--font-modern-antiqua), Georgia, serif;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--teaser-columns), minmax(0, 1fr));
+  gap: 18px;
+}
+
+.card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  border: 1px solid #a8c0a9;
+  background: #fffdf6;
+  box-shadow: 0 4px 10px #17342512;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card.surface_primary {
+  border-color: #91aa90;
+  background: linear-gradient(145deg, #d9ead4, #bfd7b9);
+}
+
+.card.surface_secondary {
+  border-color: #b6c7b1;
+  background: linear-gradient(145deg, #f2f7ef, #e1eddd);
+}
+
+.card.surface_parchment {
+  border-color: #c9b083;
+  background: linear-gradient(145deg, #fff9e9, #f2e7cd);
+}
+
+.card.surface_transparent {
+  border-color: #c9d4c6;
+  background: transparent;
+  box-shadow: none;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 18px #1734251f;
+}
+
+.cardImage {
+  width: 100%;
+  aspect-ratio: 1.45;
+  object-fit: cover;
+}
+
+.cardCopy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.cardCopy p {
+  margin: 0 0 8px;
+  color: #a04d39;
+  font: 400 0.65rem/1 var(--font-modern-antiqua), Georgia, serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cardCopy h3 {
+  margin: 0;
+  padding-bottom: 0.3em;
+  color: #173b2b;
+  font: 400 1.65rem/1.03 var(--font-eagle-lake), Georgia, serif !important;
+}
+
+.cardCopy span {
+  margin: 12px 0 17px;
+  color: #5b7464;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font: 400 0.97rem/1.5 var(--font-modern-antiqua), Georgia, serif;
+}
+
+.cardCopy a {
+  margin-top: auto;
+  color: #234e39;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font: 400 0.82rem var(--font-modern-antiqua), Georgia, serif;
+  text-decoration: none;
+}
+
+.cardCopy a:hover {
+  color: #9b463b;
+}
+
+.expand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 26px auto 0;
+  padding: 10px 16px;
+  border: 1px solid #9db69e;
+  border-radius: 999px;
+  background: #fffdf6;
+  color: #234e39;
+  cursor: pointer;
+  font: 400 0.82rem var(--font-modern-antiqua), Georgia, serif;
+}
+
+.expand:hover {
+  border-color: #234e39;
+  background: #e8f0e4;
+}
+
+.expand span {
+  color: #a04d39;
+  font-size: 1rem;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .collection {
+    width: min(100% - 24px, 1200px);
+    padding: 28px 18px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vine {
+    width: 230px;
+    right: -90px;
+    top: -62px;
+  }
+}

@@ -1,11 +1,16 @@
 import type { Block } from 'payload'
 
+import { surfaceField } from '@/blocks/fields/surface'
+
 export const StoryGridBlock: Block = {
   slug: 'storyGrid',
   interfaceName: 'StoryGridBlock',
   labels: { singular: 'Story grid', plural: 'Story grids' },
+  admin: { disableBlockName: true },
   fields: [
     { name: 'heading', type: 'text', defaultValue: 'Latest stories' },
+    surfaceField('Background color', 'primary'),
+    surfaceField('Card background color', 'parchment', 'cardBackground'),
     {
       name: 'stories',
       type: 'relationship',

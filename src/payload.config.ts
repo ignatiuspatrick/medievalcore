@@ -6,13 +6,13 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
-import { LayoutTemplates } from './collections/LayoutTemplates'
 import { Media } from './collections/Media'
+import { PageTemplates } from './collections/PageTemplates'
 import { Pages } from './collections/Pages'
 import { Stories } from './collections/Stories'
 import { Users } from './collections/Users'
 import { SiteSettings } from './globals/SiteSettings'
-import { Homepage } from './globals/Homepage'
+import { SiteFooter } from './globals/SiteFooter'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,7 +25,7 @@ export default buildConfig({
     user: Users.slug,
     livePreview: {
       collections: ['pages'],
-      url: ({ data }) => typeof data?.slug === 'string' && data.slug ? `/${data.slug}?preview=true` : '/',
+      url: ({ data }) => data?.isHomepage ? '/?preview=true' : typeof data?.slug === 'string' && data.slug ? `/${data.slug}?preview=true` : '/',
       breakpoints: [
         { name: 'phone', label: 'Phone', width: 390, height: 844 },
         { name: 'tablet', label: 'Tablet', width: 768, height: 1024 },
@@ -48,8 +48,8 @@ export default buildConfig({
       actions: ['@/components/admin/WorkspaceSwitch#WorkspaceSwitch'],
     },
   },
-  collections: [Users, Media, LayoutTemplates, Stories, Pages],
-  globals: [SiteSettings, Homepage],
+  collections: [Users, Media, PageTemplates, Stories, Pages],
+  globals: [SiteSettings, SiteFooter],
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL },
   }),

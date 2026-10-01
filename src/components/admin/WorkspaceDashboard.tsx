@@ -15,7 +15,7 @@ type StoryRecord = {
   status?: 'draft' | 'in_review' | 'published'
   updatedAt?: string
   content?: unknown
-  layoutTemplate?: { name?: string } | number | string
+  renderStyle?: 'reader'
 }
 
 const wordsIn = (value: unknown): number => {
@@ -49,7 +49,6 @@ export async function WorkspaceDashboard({ initPageResult }: AdminViewServerProp
 
   const stories: FolioStory[] = result.docs.map((document) => {
     const story = document as StoryRecord
-    const template = typeof story.layoutTemplate === 'object' && story.layoutTemplate ? story.layoutTemplate : null
     return {
       id: String(story.id),
       title: story.title || 'Untitled folio',
@@ -58,7 +57,7 @@ export async function WorkspaceDashboard({ initPageResult }: AdminViewServerProp
       updatedAt: story.updatedAt || new Date().toISOString(),
       excerpt: excerptFrom(story.content) || 'Begin composing this folio in the manuscript editor.',
       wordCount: wordsIn(story.content),
-      template: template?.name || 'Standard Article',
+      renderStyle: story.renderStyle === 'reader' ? 'Reader' : 'Reader',
     }
   })
 

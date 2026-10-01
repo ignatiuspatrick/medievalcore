@@ -1,13 +1,29 @@
-import { getPayload } from 'payload'
-
-import config from '@payload-config'
-import { LandingPageSection, type LandingStory } from '@/components/public/LandingPageSection'
+import { PageLivePreview } from '@/components/public/PageLivePreview'
+import { PageRenderer, type PageData, type PageOrnaments, type PageStory } from '@/components/public/PageRenderer'
+import { getCMS } from '@/lib/getCMS'
 
 // Payload needs the runtime secret and database connection; do not query it while building.
 export const dynamic = 'force-dynamic'
 
-export default async function HomePage() {
-  const payload = await getPayload({ config })
+export default async function HomePage({ searchParams }: { searchParams: Promise<{ preview?: string }> }) {
+  const { preview } = await searchParams
+  const isLivePreview = preview === 'true'
+  const payload = await getCMS()
+  const { docs: homepagePages } = await payload.find({
+    collection: 'pages',
+    draft: isLivePreview,
+    where: isLivePreview
+      ? { isHomepage: { equals: true } }
+      : {
+        and: [
+          { isHomepage: { equals: true } },
+          { _status: { equals: 'published' } },
+        ],
+      },
+    depth: 2,
+    limit: 1,
+  })
+  const page = homepagePages[0] as PageData | undefined
   const { docs: stories } = await payload.find({
     collection: 'stories',
     where: { status: { equals: 'published' } },
@@ -22,32 +38,22 @@ export default async function HomePage() {
     }
   }
   const ornaments = settings.ornaments || {}
-  const fairyIllustration = typeof ornaments.fairyIllustration === 'object' ? ornaments.fairyIllustration : null
-  const rabbitIllustration = typeof ornaments.rabbitIllustration === 'object' ? ornaments.rabbitIllustration : null
-  const homepage = await payload.findGlobal({ slug: 'homepage', depth: 1 }) as {
-    hero?: { eyebrow?: string; heading?: string; intro?: string; ctaLabel?: string; ctaHref?: string }
-    storyShelf?: { heading?: string; stories?: LandingStory[] }
-    dispatch?: { heading?: string; copy?: string; ctaLabel?: string; ctaHref?: string }
+  if (page) {
+    if (isLivePreview) {
+      return <PageLivePreview
+        initialPage={page}
+        recentStories={stories as PageStory[]}
+        ornaments={ornaments as PageOrnaments}
+        serverURL={process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}
+      />
+    }
+    return <PageRenderer page={page} recentStories={stories as PageStory[]} ornaments={ornaments as PageOrnaments} />
   }
-  const selectedStories = homepage.storyShelf?.stories?.filter((story) => typeof story === 'object') || []
 
   return (
-    <main className="landing-page">
-      <LandingPageSection
-        eyebrow={homepage.hero?.eyebrow}
-        heading={homepage.hero?.heading}
-        intro={homepage.hero?.intro}
-        ctaLabel={homepage.hero?.ctaLabel}
-        ctaHref={homepage.hero?.ctaHref}
-        storiesHeading={homepage.storyShelf?.heading}
-        dispatchHeading={homepage.dispatch?.heading}
-        dispatchCopy={homepage.dispatch?.copy}
-        dispatchCtaLabel={homepage.dispatch?.ctaLabel}
-        dispatchCtaHref={homepage.dispatch?.ctaHref}
-        stories={selectedStories.length ? selectedStories : stories as LandingStory[]}
-        fairyIllustration={fairyIllustration}
-        rabbitIllustration={rabbitIllustration}
-      />
+    <main className="page-shell" id="main-content" tabIndex={-1}>
+      <h1>Homepage not configured</h1>
+      <p>In Payload, open Pages and enable <strong>Use as site homepage</strong> for the one page that should appear here.</p>
     </main>
   )
 }

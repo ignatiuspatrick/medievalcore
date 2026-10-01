@@ -1,6 +1,6 @@
 'use client'
 
-import type { ComponentProps } from 'react'
+import type { ComponentProps, CSSProperties } from 'react'
 
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
@@ -10,6 +10,8 @@ type RelationshipNode = {
   relationTo?: string
   value?: string | number | { email?: string; id?: string | number; name?: string; slug?: string; title?: string }
 }
+
+const hexColorPattern = /^#(?:[\da-f]{3}|[\da-f]{6}|[\da-f]{8})$/i
 
 function relationshipDetails(node: RelationshipNode) {
   const relationTo = node.relationTo || 'content'
@@ -28,20 +30,24 @@ function relationshipDetails(node: RelationshipNode) {
  * Payload's default JSX converters deliberately omit relationship nodes.
  * Supplying one here keeps the public renderer in step with the Lexical editor.
  */
-export function RichTextContent({ data }: { data?: RichTextData }) {
+export function RichTextContent({ data, color }: { data?: RichTextData; color?: string }) {
   if (!data) return null
 
-  return <RichText
-    className="rich-text"
-    data={data}
-    converters={({ defaultConverters }) => ({
-      ...defaultConverters,
-      relationship: ({ node }: { node: RelationshipNode }) => {
-        const { href, label } = relationshipDetails(node)
-        return href
-          ? <a className="rich-text__relationship" href={href}>{label}</a>
-          : <span className="rich-text__relationship">{label}</span>
-      },
-    })}
-  />
+  const style = color && hexColorPattern.test(color)
+    ? ({ '--rich-text-color': color } as CSSProperties)
+    : undefined
+
+  return <div style={style}><RichText
+      className="rich-text"
+      data={data}
+      converters={({ defaultConverters }) => ({
+        ...defaultConverters,
+        relationship: ({ node }: { node: RelationshipNode }) => {
+          const { href, label } = relationshipDetails(node)
+          return href
+            ? <a className="rich-text__relationship" href={href}>{label}</a>
+            : <span className="rich-text__relationship">{label}</span>
+        },
+      })}
+    /></div>
 }

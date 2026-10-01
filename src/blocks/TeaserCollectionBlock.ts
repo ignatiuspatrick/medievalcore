@@ -4,6 +4,7 @@ import { AccordionBlock } from '@/blocks/AccordionBlock'
 import { ButtonBlock } from '@/blocks/ButtonBlock'
 import { CarouselBlock } from '@/blocks/CarouselBlock'
 import { CustomTextBlock } from '@/blocks/CustomTextBlock'
+import { surfaceField } from '@/blocks/fields/surface'
 import { HeroBannerBlock } from '@/blocks/HeroBannerBlock'
 import { ImageBlock } from '@/blocks/ImageBlock'
 import { LandingPageBlock } from '@/blocks/LandingPageBlock'
@@ -19,7 +20,15 @@ const legacyArticleCardFields: Field[] = [
   { name: 'description', type: 'textarea' },
   { name: 'image', label: 'Image (optional)', type: 'upload', relationTo: 'media' },
   { name: 'linkLabel', label: 'Link label (optional)', type: 'text' },
-  { name: 'linkHref', label: 'Link URL', type: 'text', admin: { condition: (_, siblingData) => Boolean(siblingData.linkLabel) } },
+  {
+    name: 'linkType', label: 'Destination type', type: 'select', defaultValue: 'internal',
+    options: [{ label: 'Internal page or path', value: 'internal' }, { label: 'External URL', value: 'external' }],
+    admin: { condition: (_, siblingData) => Boolean(siblingData.linkLabel) },
+  },
+  {
+    name: 'linkHref', label: 'Destination URL', type: 'text',
+    admin: { condition: (_, siblingData) => Boolean(siblingData.linkLabel), description: 'Internal: /about-mia. External: https://example.com.' },
+  },
 ]
 
 /**
@@ -31,7 +40,7 @@ const ArticleCardGroupContainerCompatibilityBlock: Block = {
   interfaceName: 'ArticleCardGroupContainerCompatibilityBlock',
   labels: { singular: 'Section container', plural: 'Section containers' },
   fields: [
-    { name: 'background', type: 'select', options: [{ label: 'Primary sage', value: 'primary' }] },
+    surfaceField('Section background color', 'primary'),
     { name: 'padding', type: 'select', options: [{ label: 'Medium', value: 'medium' }] },
     { name: 'contentBlocks', type: 'blocks', blocks: [TitleBlock] },
   ],
@@ -73,10 +82,12 @@ export const TeaserCollectionBlock: Block = {
   slug: 'teaserCollection',
   interfaceName: 'TeaserCollectionBlock',
   labels: { singular: 'Article card group', plural: 'Article card groups' },
+  admin: { disableBlockName: true },
   fields: [
     { name: 'eyebrow', label: 'Eyebrow', type: 'text', admin: { description: 'Optional maroon overline displayed above the title.' } },
     { name: 'heading', label: 'Title', type: 'text' },
     { name: 'intro', label: 'Introduction', type: 'textarea' },
+    surfaceField('Background color', 'primary'),
     {
       name: 'columns',
       label: 'Cards per row',

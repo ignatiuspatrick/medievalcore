@@ -13,6 +13,7 @@ import { StoryGridBlock } from '@/blocks/StoryGridBlock'
 import { TeaserBlock } from '@/blocks/TeaserBlock'
 import { TeaserCollectionBlock } from '@/blocks/TeaserCollectionBlock'
 import { TitleBlock } from '@/blocks/TitleBlock'
+import { surfaceField } from '@/blocks/fields/surface'
 
 /**
  * Payload validates a copied block against every block available at its source
@@ -25,21 +26,9 @@ export const NestedContainerBlock: Block = {
   slug: 'container',
   interfaceName: 'NestedContainerBlock',
   labels: { singular: 'Nested section container', plural: 'Nested section containers' },
+  admin: { disableBlockName: true },
   fields: [
-    {
-      name: 'background',
-      label: 'Section surface',
-      type: 'select',
-      defaultValue: 'primary',
-      options: [
-        { label: 'Primary sage', value: 'primary' },
-        { label: 'Secondary sage', value: 'secondary' },
-        { label: 'Transparent', value: 'transparent' },
-        { label: 'Parchment (legacy)', value: 'parchment' },
-        { label: 'Sage wash (legacy)', value: 'sage' },
-        { label: 'Ink (legacy)', value: 'ink' },
-      ],
-    },
+    surfaceField('Section background color', 'primary'),
     {
       name: 'padding',
       label: 'Inner spacing',
